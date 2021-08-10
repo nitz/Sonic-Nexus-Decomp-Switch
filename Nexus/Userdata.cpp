@@ -1,5 +1,63 @@
 #include "RetroEngine.hpp"
 
+#if defined(__SWITCH__)
+    #include "filesystem.hpp"
+    #define STD_FILESYSTEM ghc::filesystem
+#else
+    #define STD_FILESYSTEM std::filesystem
+#endif
+
+#if RETRO_PLATFORM == RETRO_WIN && _MSC_VER
+#include <Windows.h>
+#include <codecvt>
+#include "../dependencies/windows/ValveFileVDF/vdf_parser.hpp"
+
+HKEY hKey;
+
+LONG GetDWORDRegKey(HKEY hKey, const std::wstring &strValueName, DWORD &nValue, DWORD nDefaultValue)
+{
+    nValue = nDefaultValue;
+    DWORD dwBufferSize(sizeof(DWORD));
+    DWORD nResult(0);
+    LONG nError = ::RegQueryValueExW(hKey, strValueName.c_str(), 0, NULL, reinterpret_cast<LPBYTE>(&nResult), &dwBufferSize);
+    if (ERROR_SUCCESS == nError) {
+        nValue = nResult;
+    }
+    return nError;
+}
+
+LONG GetStringRegKey(HKEY hKey, const std::wstring &strValueName, std::wstring &strValue, const std::wstring &strDefaultValue)
+{
+    strValue = strDefaultValue;
+    WCHAR szBuffer[512];
+    DWORD dwBufferSize = sizeof(szBuffer);
+    ULONG nError;
+    nError = RegQueryValueExW(hKey, strValueName.c_str(), 0, NULL, (LPBYTE)szBuffer, &dwBufferSize);
+    if (ERROR_SUCCESS == nError) {
+        strValue = szBuffer;
+    }
+    return nError;
+}
+
+inline std::string utf16ToUtf8(const std::wstring &utf16Str)
+{
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
+    return conv.to_bytes(utf16Str);
+}
+
+inline bool dirExists(const std::wstring &dirName_in)
+{
+    DWORD ftyp = GetFileAttributesW(dirName_in.c_str());
+    if (ftyp == INVALID_FILE_ATTRIBUTES)
+        return false; // something is wrong with your path!
+
+    if (ftyp & FILE_ATTRIBUTE_DIRECTORY)
+        return true; // this is a directory!
+
+    return false; // this is not a directory!
+}
+#endif
+
 int globalVariablesCount;
 int globalVariables[GLOBALVAR_COUNT];
 char globalVariableNames[GLOBALVAR_COUNT][0x20];
@@ -346,14 +404,14 @@ void initMods()
 
     char modBuf[0x100];
     sprintf(modBuf, "%smods/", modsPath);
-    std::filesystem::path modPath(modBuf);
+    STD_FILESYSTEM::path modPath(modBuf);
 
-    if (std::filesystem::exists(modPath) && std::filesystem::is_directory(modPath)) {
+    if (STD_FILESYSTEM::exists(modPath) && STD_FILESYSTEM::is_directory(modPath)) {
         try {
-            auto rdi = std::filesystem::directory_iterator(modPath);
+            auto rdi = STD_FILESYSTEM::directory_iterator(modPath);
             for (auto de : rdi) {
                 if (de.is_directory()) {
-                    std::filesystem::path modDirPath = de.path();
+                    STD_FILESYSTEM::path modDirPath = de.path();
 
                     ModInfo *info = &modList[modCount];
 
@@ -400,11 +458,11 @@ void initMods()
                         modSettings->GetBool("", "Active", &info->active);
 
                         // Check for Data replacements
-                        std::filesystem::path dataPath(modDir + "/Data");
+                        STD_FILESYSTEM::path dataPath(modDir + "/Data");
 
-                        if (std::filesystem::exists(dataPath) && std::filesystem::is_directory(dataPath)) {
+                        if (STD_FILESYSTEM::exists(dataPath) && STD_FILESYSTEM::is_directory(dataPath)) {
                             try {
-                                auto data_rdi = std::filesystem::recursive_directory_iterator(dataPath);
+                                auto data_rdi = STD_FILESYSTEM::recursive_directory_iterator(dataPath);
                                 for (auto data_de : data_rdi) {
                                     if (data_de.is_regular_file()) {
                                         char modBuf[0x100];
@@ -440,7 +498,7 @@ void initMods()
                                         }
                                     }
                                 }
-                            } catch (std::filesystem::filesystem_error fe) {
+                            } catch (STD_FILESYSTEM::filesystem_error fe) {
                                 printLog("Data Folder Scanning Error: ");
                                 printLog(fe.what());
                             }
@@ -452,7 +510,7 @@ void initMods()
                     }
                 }
             }
-        } catch (std::filesystem::filesystem_error fe) {
+        } catch (STD_FILESYSTEM::filesystem_error fe) {
             printLog("Mods Folder Scanning Error: ");
             printLog(fe.what());
         }
@@ -462,9 +520,9 @@ void saveMods()
 {
     char modBuf[0x100];
     sprintf(modBuf, "%smods/", modsPath);
-    std::filesystem::path modPath(modBuf);
+    STD_FILESYSTEM::path modPath(modBuf);
 
-    if (std::filesystem::exists(modPath) && std::filesystem::is_directory(modPath)) {
+    if (STD_FILESYSTEM::exists(modPath) && STD_FILESYSTEM::is_directory(modPath)) {
         for (int m = 0; m < modCount; ++m) {
             ModInfo *info                 = &modList[m];
             std::string modDir            = modPath.string().c_str();
