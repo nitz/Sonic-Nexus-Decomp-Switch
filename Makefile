@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := all
 
-NAME		=  SonicNexus2008
+NAME		=  nexus2008
 SUFFIX		= 
 PKGCONFIG	=  pkg-config
 DEBUG		?= 0
@@ -99,7 +99,6 @@ SOURCES	+=	Nexus/Animation \
 			Nexus/Reader \
 			Nexus/RetroEngine \
 			Nexus/Scene \
-			Nexus/Scene3D \
 			Nexus/Script \
 			Nexus/Sprite \
 			Nexus/String \
