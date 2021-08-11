@@ -1,3 +1,4 @@
+
 # Sonic Nexus (2008, RSDK) Decompilation for the Nintendo Switch
 A Full Decompilation of Sonic Nexus (2008) made by RDC, ported to Nintendo Switch via hackery using HeyJoeWay's CD switch port as a baseline.
 
@@ -19,9 +20,9 @@ NOTE: It is recommended to give the game full RAM access. This means you shouldn
 
 # Known Bugs
 
-There is an issue where not entering the title screen / intro via dev menu will lock up the game with a frame of the title screen with an odd color palette when starting the game. fix is to use Data.bin or actually load the Intro / Title with the dev menu using Start / A
+Music does not loop properly when in Data.bin mode. Recommended to use Data folder instead.
 
-There is also no way to press a button to access the dev menu. (hopefully can be figured out eventually)
+There is no way to press a button to access the dev menu. (hopefully can be figured out eventually)
 
 # Contact:
 Join the [Retro Engine Modding Discord Server](https://dc.railgun.works/retroengine) for any extra questions you may need to know about the decompilation or modding it.

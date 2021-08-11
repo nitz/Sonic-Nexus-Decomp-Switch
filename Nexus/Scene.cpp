@@ -118,7 +118,11 @@ void ProcessStage(void)
             stageMode         = STAGEMODE_NORMAL;
             ResetBackgroundSettings();
             LoadStageFiles();
+<<<<<<< HEAD
             break;
+=======
+            //fallthrough cuz it fixes a bug looool
+>>>>>>> f6fbc22f10bbd061549ff0ac8d13a98085dc00cd
         case STAGEMODE_NORMAL:
             if (fadeMode > 0)
                 fadeMode--;
