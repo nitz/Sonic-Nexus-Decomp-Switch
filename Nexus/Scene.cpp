@@ -84,7 +84,6 @@ byte tilesetGFXData[TILESET_SIZE];
 
 void ProcessStage(void)
 {
-    int updateMax = 0; 
     switch (stageMode) {
         case STAGEMODE_LOAD: // Startup
             fadeMode = 0;
@@ -118,11 +117,7 @@ void ProcessStage(void)
             stageMode         = STAGEMODE_NORMAL;
             ResetBackgroundSettings();
             LoadStageFiles();
-<<<<<<< HEAD
-            break;
-=======
             //fallthrough cuz it fixes a bug looool
->>>>>>> f6fbc22f10bbd061549ff0ac8d13a98085dc00cd
         case STAGEMODE_NORMAL:
             if (fadeMode > 0)
                 fadeMode--;
@@ -148,18 +143,8 @@ void ProcessStage(void)
                 stageMilliseconds = 100 * frameCounter / Engine.refreshRate;
             }
 
-            updateMax = 1;
-            /*updateMax = Engine.renderFrameIndex;
-            if (Engine.refreshRate >= Engine.targetRefreshRate) {
-                updateMax = 0;
-                if (Engine.frameCount % Engine.skipFrameIndex < Engine.renderFrameIndex)
-                    updateMax = 1;
-            }*/
-
             // Update
-            for (int i = 0; i < updateMax; ++i) {
-                ProcessObjects();
-            }
+            ProcessObjects();
 
             if (objectEntityList[0].type == OBJ_TYPE_PLAYER) {
                 if (cameraEnabled) {
@@ -199,18 +184,8 @@ void ProcessStage(void)
                     stageMilliseconds = 100 * frameCounter / Engine.refreshRate;
                 }
 
-                updateMax = 1;
-                /*updateMax = Engine.renderFrameIndex;
-                if (Engine.refreshRate >= Engine.targetRefreshRate) {
-                    updateMax = 0;
-                    if (Engine.frameCount % Engine.skipFrameIndex < Engine.renderFrameIndex)
-                        updateMax = 1;
-                }*/
-
                 // Update
-                for (int i = 0; i < updateMax; ++i) {
-                    ProcessObjects();
-                }
+                ProcessObjects();
 
                 if (objectEntityList[0].type == OBJ_TYPE_PLAYER) {
                     if (cameraEnabled) {
