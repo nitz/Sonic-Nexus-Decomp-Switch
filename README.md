@@ -4,7 +4,7 @@ A Full Decompilation of Sonic Nexus (2008) by Taxman, made by RDC, ported to Nin
 
 # Installation Instructions
 
-You can find downloads in releases.
+You can find downloads in releases, or if you wanna go with my recent commits, use the github actions page here! It's live updated with any commits I have to add to the port.
 
    1. Make sure your Switch can run homebrew.
    2. Extract the contents of the zip to the root of your SD card.
