@@ -1,6 +1,6 @@
 
 # Sonic Nexus (2008, RSDK) Decompilation for the Nintendo Switch
-A Full Decompilation of Sonic Nexus (2008) made by RDC, ported to Nintendo Switch via hackery using HeyJoeWay's CD switch port as a baseline.
+A Full Decompilation of Sonic Nexus (2008) by Taxman, made by RDC, ported to Nintendo Switch via hackery using HeyJoeWay's CD switch port as a baseline.
 
 # Installation Instructions
 
@@ -20,9 +20,7 @@ NOTE: It is recommended to give the game full RAM access. This means you shouldn
 
 # Known Bugs
 
-Music does not loop properly when in Data.bin mode. Recommended to use Data folder instead.
-
-There is no way to press a button to access the dev menu. (hopefully can be figured out eventually)
+There is no way to press a button to access the dev menu when in game. (hopefully can be figured out eventually)
 
 # Contact:
 Join the [Retro Engine Modding Discord Server](https://dc.railgun.works/retroengine) for any extra questions you may need to know about the decompilation or modding it.
